@@ -1,5 +1,5 @@
 # WordCleaner2000
-A light-weight stop-word/custom stop-word removal tool and word cleaner.
+A light-weight stop-word/custom stop-word removal tool and text cleaner.
 
 You can put this in your python-dev directory or put it in your working directory. You need to pass the working directory as part of the initialization. See below for sample usage.
 
