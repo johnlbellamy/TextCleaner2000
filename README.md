@@ -16,7 +16,7 @@ UNIX-LIKE:
 cleaner = TextCleaner("install/location/WordCleaner2000")
 
 WINDOWS:
-cleaner = TextCleaner("install\\location\\WordCleaner2000")
+cleaner = TextCleaner("install\\\location\\\WordCleaner2000")
 
 # To remove numbers and punctuation/symbols:
 text_without_numbers_or_symbols = cleaner.alpha_iterator(pd.DataFrame['Column'] or list)
