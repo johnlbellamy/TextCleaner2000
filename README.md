@@ -5,7 +5,7 @@ You can put this in your python-dev directory or put it in your working director
 
 # Add to first line of Jupyter or where your imports go:
 
-from  TextCleaner2000.WordCleaner import TextCleaner
+from  TextCleaner2000.TextCleaner import TextCleaner
 
 # For Help and detailed usage:
 help(cleaner)
