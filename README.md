@@ -21,7 +21,7 @@ cleaner = TextCleaner("install\\\location\\\TextCleaner2000")
 # To remove numbers and punctuation/symbols:
 text_without_numbers_or_symbols = cleaner.alpha_iterator(pd.DataFrame['Column'] or list)
 
-# To remove commons top words like "and","or", "the", etc.:
+# To remove common stop words like "and","or", "the", etc.:
 text_with_common_stops_removed = cleaner.stop_word_iterator(pd.DataFrame['Column'] or list)
 
 # Perhaps the best feature is the ability to pass a list to remove custom stop words.
