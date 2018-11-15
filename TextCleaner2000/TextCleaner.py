@@ -16,7 +16,7 @@ class TextCleaner:
 	3) Pass the install directory to tell TextCleaner where to locate files and initialize a cleaner instance:
 	   WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
 	   LINUX/UNIX/IOS: cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
-	4) Methods within a cleaner instance are static methods so to use the functions call: cleaner.function_name
+	4) Methods within a TextCleaner instance are static methods so to use the functions call: cleaner.function_name(args)
 	
 	EXAMPLE USAGE:
 	For the following examples, text refers to an array-like object. For best results, pass text as a list() or a Pandas DataFrame column: (assuming data_frame is a pandas DataFrame) data_frame["column_name"].
