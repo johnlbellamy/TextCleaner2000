@@ -4,45 +4,46 @@ import pickle
 import os
 
 class TextCleaner:
+
+    
     """
-	Takes a string from array-like objects and performs:
-	Where text is in list (or array-like) format.
-        alpha_iterator(text) --  Returns lower-case letters stripped of punctuation and numbers.
-        stop_word_iterator(text) --  Removes common "stop" words, like "and."
-        custom_stop_word_iterator(text, stop_words) -- Custom stop_words in list format. stop_words are words to be removed.
-        can use this in-lieu of stop_word_iterator, or in addition to.
+    Takes text where text is an array-like objects and performs:
+
+    alpha_iterator(text) ==>  Returns lower-case letters stripped of 
+    punctuation and numbers.
+    stop_word_iterator(text) ==>  Removes common "stop" words, like "and".
+    custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
+    list format. stop_words are words to be removed.
+    can use this in-lieu of stop_word_iterator, or in addition to.
 	
-	GENERAL USAGE:
-	    1) If use is for a simple project, with a couple python files, download file 
-        to root directory of project, where .py or .ipynb will live.
-    
-	Import:
-	    2) from  TextCleaner2000.TextCleaner import TextCleaner
-	
-	Instance Instantiation:
-        3a) For simple projects as described in 1), simply  instantiate a cleaner opbject with 
-        empty call: cleaner = TextCleaner()
-    
-	    3b) For more complicated projects pass the install directory to tell TextCleaner where to locate files and initialize a cleaner instance:
-	    WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
-	    LINUX/UNIX/IOS: cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
-	
-	Call static methods:
-	    4) cleaner is static method so to use the functions call: cleaner.function_name
-	
-	EXAMPLE USAGE:
-	    For the following examples, text refers to an array-like object. For best results, pass text as a list() or a Pandas DataFrame column: (assuming data_frame is a pandas DataFrame) data_frame["column_name"].
+    GENERAL USAGE:
+        1) If use is for a simple project, with a couple python files, download 
+        file to root directory of project, where .py or .ipynb will live.
+    Import:
+        2) from  TextCleaner2000.TextCleaner import TextCleaner
+    Instance Instantiation:
+        3a) For simple projects as described in 1), simply  instantiate a 
+        cleaner object with empty call: cleaner = TextCleaner()
+
+        3b) For more complicated projects pass the install directory to tell 
+        TextCleaner where to locate files and initialize  a cleaner instance:
+        WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
+        LINUX/UNIX/IOS: cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
+        Call static methods:
+        4) cleaner is static method so to use the functions call: 
+        cleaner.function_name
+     EXAMPLE USAGE:
+        For the following examples, text refers to an array-like object. 
+        For best results, pass text as a list() or a Pandas 
+		 DataFrame column: (assuming data_frame is a pandas DataFrame) data_frame["column_name"].
         For custom stopword removal, pass as a list().	
-	
-	GENERAL NUMBER AND PUNCTUATION REMOVAL:
-	    alpha_words = cleaner.alpha_iterator(text)
-	
-	COMMON STOPWORD REMOVAL:
-	    cleaned_of_stops = cleaner.stop_word_iterator(text)
-	
-	CUSTOM STOPWORD REMOVAL:
-	    cleaned_of_custom_stops = cleaner.custom_stop_word_iterator(text, stop_words)
-	    Remember that stop_words is a comma-separated list()."""
+    GENERAL NUMBER AND PUNCTUATION REMOVAL:
+        alpha_words = cleaner.alpha_iterator(text)
+    COMMON STOPWORD REMOVAL:
+        cleaned_of_stops = cleaner.stop_word_iterator(text)
+    CUSTOM STOPWORD REMOVAL:
+        cleaned_of_custom_stops = cleaner.custom_stop_word_iterator(text, stop_words)
+        Remember that stop_words is a comma-separated list()."""  
     
     def __init__(self, tc_2000_home = ""):
         self.tc_2000_home = tc_2000_home
