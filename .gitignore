@@ -1,3 +1,4 @@
 TextCleaner/*.pyc
 TextCleaner/__pycache__/
 TextCleaner/.project
+.gitignore
