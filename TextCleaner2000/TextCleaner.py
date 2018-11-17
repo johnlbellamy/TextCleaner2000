@@ -4,14 +4,14 @@ import pickle
 import os
 
 class TextCleaner:
-
-    
     """
     Takes text where text is an array-like objects and performs:
 
     alpha_iterator(text) ==>  Returns lower-case letters stripped of 
     punctuation and numbers.
     stop_word_iterator(text) ==>  Removes common "stop" words, like "and".
+        Note: By default stop_word_iterator removes numbers. To keep numbers:
+        stop_word_oterator(text, remove_numeric = False)
     custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
     list format. stop_words are words to be removed.
     can use this in-lieu of stop_word_iterator, or in addition to.
@@ -24,7 +24,6 @@ class TextCleaner:
     Instance Instantiation:
         3a) For simple projects as described in 1), simply  instantiate a 
         cleaner object with empty call: cleaner = TextCleaner()
-
         3b) For more complicated projects pass the install directory to tell 
         TextCleaner where to locate files and initialize  a cleaner instance:
         WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
@@ -109,7 +108,10 @@ class TextCleaner:
   
     def alpha_iterator(self,text, remove_numeric = True):
         """Calls __alphaizer to apply this method to array-like objects. Usage:
-        TextCleaner.alphaizer(text)."""
+        TextCleaner.alphaizer(text).
+        Note: By default this method removes numbers from each string.
+        To change this behavior pass the flag remove_numerals:
+            alphaizer(text, remove_numerals = False)"""
 
         self.text = text
         text2 = [self.__alphaizer(x) for x in text]
@@ -138,19 +140,19 @@ class TextCleaner:
 
     def custom_stop_word_iterator(self, text, stop_words):
         """Removes custom stop-words. For example, "patient", or "medicine", if
-        one is dealing with medical text and do not want to include those words in analysis. Can use this method to pass any set of stop
-        words, or in-lieu of common stop-word method stop_word_iterator.Calls __word_remover to apply this method to array-like objects. Usage:
-        TextCleaner.custom_stop_word_iterator(text, stop_words), where stop-words and text are in a comma-
+        one is dealing with medical text and do not want to include those words 
+        in analysis. Can use this method to pass any set of stop
+        words, or in-lieu of common stop-word method stop_word_iterator.Calls 
+        __word_remover to apply this method to array-like objects. Usage:
+        TextCleaner.custom_stop_word_iterator(text, stop_words), where 
+        stop-words and text are in a comma-
         separated list, or iterable."""
 
         self.text = text
         
         text2 = [self.__word_remover(x,stop_words) for x in text]
         
-        
         return text2
-
-
-      
-
-
+    
+    if __name__ == '__main__':
+        
