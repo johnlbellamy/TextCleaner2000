@@ -95,36 +95,14 @@ class TextCleaner:
             i += 1
         
         return text
-     
-    def stop_word_iterator(self, text):
-        """Calls __stop_word_remover to apply this method to array-like objects.
-        Usage: TextCleaner.stop_word_iterator(text)."""
-
-        self.text = text
-        
-        text2 = [self.__stop_word_remover(x,self.stop_words) for x in text]
-        
-        return text2
-  
-    def alpha_iterator(self,text, remove_numeric = True):
-        """Calls __alphaizer to apply this method to array-like objects. Usage:
-        TextCleaner.alphaizer(text).
-        Note: By default this method removes numbers from each string.
-        To change this behavior pass the flag remove_numerals:
-            alphaizer(text, remove_numerals = False)"""
-
-        self.text = text
-        text2 = [self.__alphaizer(x) for x in text]
-        
-        return text2
-
+    
     def __word_remover(self, text, stop):
         """Removes custom stop-words. For example, "patient", or "medicine", if
         one is dealing with medical text. Can use this method to pass any set of stop
         words, or in-lieu of common stop-word method stop_word_iterator. Called by
         word_iterator to apply this to lists, or array-like (pandas dataframe)
         objects. """
-
+    
         self.text = text
         self.stop = stop
      
@@ -137,7 +115,32 @@ class TextCleaner:
             i += 1
         
         return text
+    
+    @staticmethod
+    def stop_word_iterator(self, text):
+        """Calls __stop_word_remover to apply this method to array-like objects.
+        Usage: TextCleaner.stop_word_iterator(text)."""
 
+        self.text = text
+        
+        text2 = [self.__stop_word_remover(x,self.stop_words) for x in text]
+        
+        return text2
+    
+    @staticmethod
+    def alpha_iterator(self,text, remove_numeric = True):
+        """Calls __alphaizer to apply this method to array-like objects. Usage:
+        TextCleaner.alphaizer(text).
+        Note: By default this method removes numbers from each string.
+        To change this behavior pass the flag remove_numerals:
+            alphaizer(text, remove_numerals = False)"""
+
+        self.text = text
+        text2 = [self.__alphaizer(x) for x in text]
+        
+        return text2
+    
+    @staticmethod
     def custom_stop_word_iterator(self, text, stop_words):
         """Removes custom stop-words. For example, "patient", or "medicine", if
         one is dealing with medical text and do not want to include those words 
@@ -154,5 +157,5 @@ class TextCleaner:
         
         return text2
     
-    if __name__ == '__main__':
+
         
