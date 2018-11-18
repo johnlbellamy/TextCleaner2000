@@ -2,6 +2,7 @@
 import re
 import pickle
 import os
+import string
 
 class TextCleaner:
     """
@@ -28,10 +29,10 @@ class TextCleaner:
         TextCleaner where to locate files and initialize  a cleaner instance:
         WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
         LINUX/UNIX/IOS: cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
-        Call static methods:
-        4) cleaner is static method so to use the functions call: 
+        Call instance methods:
+        4) cleaner has instance methods so to use the functions call: 
         cleaner.function_name
-     EXAMPLE USAGE:
+    METHOD USAGE:
         For the following examples, text refers to an array-like object. 
         For best results, pass text as a list() or a Pandas 
 		 DataFrame column: (assuming data_frame is a pandas DataFrame) data_frame["column_name"].
@@ -57,30 +58,32 @@ class TextCleaner:
             self.stop_words = pickle.load(pkl_file) 
             pkl_file.close() 
 
-    def __alphaizer(self, text, remove_numeric = True):
+    def __alphaizer(self, text, remove_numeric):
         self.text = text
+        self.remove_numeric = remove_numeric
         """
-		 Given a string (text), removes all punctuation and numbers.
+        Given a string (text), removes all punctuation and numbers.
         Returns lower-case words. Called by the iterator method
         alpha_iterator to apply this to lists, or array-like (pandas dataframe)
         objects. """
         if remove_numeric:
             result = ''.join(i for i in text if not i.isdigit())
-            x = re.sub(r",'--!@#$%=&:;<>?().{}][/-]+\"", " " , result)
-            x = re.sub(r"^\s" , "" , x) #Removes leading spaces
-            x = re.sub(r"\s+$" ,"" , x) # Removes trailing spaces
-            x = re.sub(r"  "," ", x) #Removes extra spaces
+            translation = str.maketrans("","", string.punctuation)
+            x = result.translate(translation)
+            x = re.sub("^\s" , "" , x) #Removes leading spaces
+            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
+            x = re.sub("  "," ", x) #Removes extra spaces
             x = x.replace('\\','').lower()
             return x
         else:
-            x = re.sub(r",'--!@#$%=&:;<>?().{}][/-]+\"", " " , text)
-            x = re.sub(r"^\s" , "" , x) #Removes leading spaces
-            x = re.sub(r"\s+$" ,"" , x) # Removes trailing spaces
-            x = re.sub(r"  "," ", x) #Removes extra spaces
+            translation = str.maketrans("","", string.punctuation)
+            x = text.translate(translation)
+            x = re.sub("^\s" , "" , x) #Removes leading spaces
+            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
+            x = re.sub("  "," ", x) #Removes extra spaces
             x = x.replace('\\','').lower() #Removes back-space
             return x
 	       
-                
     def __stop_word_remover(self, text, stop):
         """Removes common stop-words like: "and", "or","but", etc. Called by
         stop_word_iterator to apply this to lists, or array-like (pandas dataframe)
@@ -116,7 +119,6 @@ class TextCleaner:
         
         return text
     
-    @staticmethod
     def stop_word_iterator(self, text):
         """Calls __stop_word_remover to apply this method to array-like objects.
         Usage: TextCleaner.stop_word_iterator(text)."""
@@ -127,20 +129,20 @@ class TextCleaner:
         
         return text2
     
-    @staticmethod
-    def alpha_iterator(self,text, remove_numeric = True):
-        """Calls __alphaizer to apply this method to array-like objects. Usage:
+    def alpha_iterator(self, text, remove_numeric = True):
+        """
+        Calls __alphaizer to apply this method to array-like objects. Usage:
         TextCleaner.alphaizer(text).
         Note: By default this method removes numbers from each string.
         To change this behavior pass the flag remove_numerals:
-            alphaizer(text, remove_numerals = False)"""
-
+        alphaizer(text, remove_numerals = False)
+        """
         self.text = text
-        text2 = [self.__alphaizer(x) for x in text]
+        self.remove_numeric = remove_numeric
+        text2 = [self.__alphaizer(x, remove_numeric) for x in text]
         
         return text2
     
-    @staticmethod
     def custom_stop_word_iterator(self, text, stop_words):
         """Removes custom stop-words. For example, "patient", or "medicine", if
         one is dealing with medical text and do not want to include those words 
