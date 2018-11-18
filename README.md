@@ -17,8 +17,8 @@ from  TextCleaner2000.TextCleaner import TextCleaner
 # For Help and detailed usage:
 help(cleaner)
 
-#Usage
-# Instantiate Cleaner Object:
+# Usage
+## Instantiate Cleaner Object:
 ## By placing TextCleaner2000 in root directory of project:
 
 cleaner = TextCleaner()
