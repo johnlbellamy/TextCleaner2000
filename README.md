@@ -10,7 +10,7 @@ A light-weight stop-word/custom stop-word removal tool and text cleaner.
    For larger projects, or to specify a specific directory you can pass the chosen TextCleaner2000 directory as the only 
    argument in object instantiation. See below for sample usage.
 
-# Add to first line of Jupyter or where your imports go:
+# Add to imports:
 
 from  TextCleaner2000.TextCleaner import TextCleaner
 
@@ -19,11 +19,11 @@ help(cleaner)
 
 # Usage
 ## Instantiate Cleaner Object:
-## By placing TextCleaner2000 in root directory of project:
+## By placing (copy and paste) folder TextCleaner2000\TextCleaner20000 in root directory of project:
 
 cleaner = TextCleaner()
 
-## Specify install directory; Pass install directory as first argument
+## Specify unzip directory; Pass unzip directory as first argument
 
 UNIX-LIKE:
 cleaner = TextCleaner("install/location/TextCleaner2000")
