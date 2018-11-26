@@ -3,6 +3,7 @@ import re
 import pickle
 import os
 import string
+import pandas as pd
 
 class TextCleaner:
     """
@@ -26,11 +27,18 @@ class TextCleaner:
         list of sentences. 
 	
     GENERAL USAGE:
-        1) After unzipping/cloning, move TextCleaner/TextCleaner to your project's root folder where .py or .ipynb will live.
+        1) You don't have a need to locate your project outside rot folder, download 
+        file to root directory of project, where .py or .ipynb will live.
     Import:
         2) from  TextCleaner2000.TextCleaner import TextCleaner
     Instance Instantiation:
-        3) Simply  instantiate a cleaner object with empty call: cleaner = TextCleaner()
+        3a) For simple projects as described in 1), simply  instantiate a 
+        cleaner object with empty call: cleaner = TextCleaner()
+        3b) For more complicated projects where you want to specify some other location than root folder,
+		pass the install directory to tell TextCleaner where to locate files and initialize  a cleaner instance:
+        WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
+        LINUX/UNIX/IOS: 
+		cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
    
     METHOD USAGE:
         For the following examples, text refers to an array-like object. 
@@ -59,13 +67,14 @@ class TextCleaner:
             pkl_file.close() 
 
     def __alphaizer(self, text, remove_numeric, remove_emoticon):
-        self.text = text
-        self.remove_numeric = remove_numeric
-        self.remove_emoticon = remove_emoticon
         """Given a string (Text), removes all punctuation and numbers.
         Returns lower-case words. Called by the iterator method
         alpha_iterator to apply this to lists, or array-like (pandas dataframe)
         objects."""
+        self.text = text
+        self.remove_numeric = remove_numeric
+        self.remove_emoticon = remove_emoticon
+        
         
         if remove_numeric and remove_emoticon:
             non_numeric = ''.join(i for i in text if not i.isdigit())
@@ -113,17 +122,18 @@ class TextCleaner:
             emoticons.replace('-','')
             clean =  cleaned + ' ' + emoticons
             return clean.rstrip()
-           
-    def __tokenizer(text):
-        """Returns words in a list, composed of a sentence split by single-spaces."""
-        tokenized = text.split(' ')
-        clean = [ token for token in tokenized if token != '']
-        return clean
-    
+          
     @staticmethod     
     def tokenizer(text): 
-        clean  = [TextCleaner.__tokenizer(t) for t in text if t != None]
-        return clean
+        """Given a sentence, splits sentence on blanks aand returns a list of ngrams or tokens"""
+        if type(text) is str:
+            tokenized = text.split(' ')
+            clean = [ token for token in tokenized if token != '']
+            return clean
+        
+        elif type(text) is pd.core.series.Series or  type(text) is list:
+            clean  = [TextCleaner.tokenizer(t) for t in text if t != None]
+            return clean
     
     def __stop_word_remover(self, text, stop):
         """Removes common stop-words like: "and", "or","but", etc. Called by
@@ -133,7 +143,7 @@ class TextCleaner:
         self.text = text
         
         clean = ''
-        tokens = [t for t in TextCleaner.__tokenizer(text) if t not in stop]
+        tokens = [t for t in TextCleaner.tokenizer(text) if t not in stop]
         for t in tokens:
             clean += " " + t
         return clean.lstrip()
