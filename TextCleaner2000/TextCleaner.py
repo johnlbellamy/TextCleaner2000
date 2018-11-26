@@ -146,8 +146,8 @@ class TextCleaner:
         emoticons_ = ""
         emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
         for e in emoticons:
-            emoticons_ += e
-        return emoticons_
+            emoticons_ += ' ' + e
+        return emoticons_.lstrip()
 		
     def stop_word_iterator(self, text):
         """Calls __stop_word_remover to apply this method to array-like objects.
