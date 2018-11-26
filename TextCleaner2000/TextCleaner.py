@@ -69,7 +69,6 @@ class TextCleaner:
         self.remove_numeric = remove_numeric
         self.remove_emoticon = remove_emoticon
         
-        
         if remove_numeric and remove_emoticon:
             non_numeric = ''.join(i for i in text if not i.isdigit())
             non_numeric = re.sub('<[^>]*>','', non_numeric)
@@ -133,7 +132,6 @@ class TextCleaner:
         """Removes common stop-words like: "and", "or","but", etc. Called by
         stop_word_iterator to apply this to lists, or array-like (pandas dataframe)
         objects. """
-
         self.text = text
         
         clean = ''
@@ -143,7 +141,8 @@ class TextCleaner:
         return clean.lstrip()
         
     def __emoticon_finder(text):
-        ''' Finds emoticons.'''
+        """Finds emoticons."""
+        
         emoticons_ = ""
         emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
         for e in emoticons:
@@ -153,7 +152,6 @@ class TextCleaner:
     def stop_word_iterator(self, text):
         """Calls __stop_word_remover to apply this method to array-like objects.
         Usage: TextCleaner.stop_word_iterator(Text)."""
-
         self.text = text
         
         clean = [self.__stop_word_remover(t, self.stop_words) for t in text]
@@ -183,7 +181,6 @@ class TextCleaner:
         TextCleaner.custom_stop_word_iterator(Text, stop_words), where 
         stop-words and Text are in a comma-
         separated list, or iterable."""
-
         self.text = text
         
         clean = [self.__stop_word_remover(t, stop_words) for t in text]
