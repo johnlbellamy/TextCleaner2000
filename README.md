@@ -14,8 +14,6 @@ help(cleaner)
 
 # Usage
 Instantiate Cleaner Object:
-Place (copy and paste) folder TextCleaner2000\TextCleaner20000 in root directory of project:
-Then:
 cleaner = TextCleaner()
 
 # To remove numbers and punctuation/symbols:
