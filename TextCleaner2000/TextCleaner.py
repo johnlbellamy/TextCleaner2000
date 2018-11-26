@@ -3,7 +3,6 @@ import re
 import pickle
 import os
 import string
-
 class TextCleaner:
     """
     Takes text where text is an array-like objects and performs:
@@ -21,6 +20,9 @@ class TextCleaner:
     custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
     list format. stop_words are words to be removed.
     can use this in-lieu of stop_word_iterator, or in addition to.
+    STATIC METHOD:
+        TextCleaner.tokenizer(text) ==> Returns tokens (unigrams) from a 
+        list of sentences. 
 	
     GENERAL USAGE:
         1) If use is for a simple project, with a couple python files, download 
@@ -118,43 +120,31 @@ class TextCleaner:
             emoticons.replace('-','')
             returned =  x + ' ' + emoticons
             return returned.rstrip()
-         
-			
+           
+    def __tokenizer(text):
+        """Returns words in a list, composed of a sentence split by single-spaces."""
+        returned = text.split(' ')
+        clean = [ x for x in returned if x != '']
+        return clean
+    
+    @staticmethod     
+    def tokenizer(text): 
+        returned  = [TextCleaner.__tokenizer(x) for x in text if x != None]
+        return returned
+    
     def __stop_word_remover(self, text, stop):
         """Removes common stop-words like: "and", "or","but", etc. Called by
         stop_word_iterator to apply this to lists, or array-like (pandas dataframe)
         objects. """
 
         self.text = text
-        self.stop = stop
         
-        i = 0
-        while i < len(stop):
-            text = re.sub("\s"+stop[i]+"\s|^"+stop[i]+"\s|\s"+stop[i]+"$", " ", text)
-            i += 1
+        clean = ''
+        words = [w for w in TextCleaner.__tokenizer(text) if w not in stop]
+        for w in words:
+            clean += " " + w
+        return clean.lstrip()
         
-        return text
-    
-    def __word_remover(self, text, stop):
-        """Removes custom stop-words. For example, "patient", or "medicine", if
-        one is dealing with medical text. Can use this method to pass any set of stop
-        words, or in-lieu of common stop-word method stop_word_iterator. Called by
-        word_iterator to apply this to lists, or array-like (pandas dataframe)
-        objects. """
-    
-        self.text = text
-        self.stop = stop
-     
-        i = 0
-        while i < len(stop):
-            text = re.sub("\s"+stop[i]+"\s|^"+stop[i]+"\s|\s"+stop[i]+"$", " ", text)
-            text = re.sub("  "," ", text) #Removes extra spaces
-            text = re.sub("^\s" , "" , text) #Removes leading spaces
-            text = re.sub("\s+$" ,"" , text) # Removes trailing spaces
-            i += 1
-        
-        return text
-    
     def __emoticon_finder(text):
         ''' Finds emoticons.'''
         emoticons_ = ""
@@ -193,14 +183,14 @@ class TextCleaner:
         one is dealing with medical text and do not want to include those words 
         in analysis. Can use this method to pass any set of stop
         words, or in-lieu of common stop-word method stop_word_iterator.Calls 
-        __word_remover to apply this method to array-like objects. Usage:
+        __stop_word_remover to apply this method to array-like objects. Usage:
         TextCleaner.custom_stop_word_iterator(text, stop_words), where 
         stop-words and text are in a comma-
         separated list, or iterable."""
 
         self.text = text
         
-        text2 = [self.__word_remover(x,stop_words) for x in text]
+        text2 = [self.__stop_word_remover(x,stop_words) for x in text]
         
         return text2
     
