@@ -9,10 +9,15 @@ class TextCleaner:
     Takes text where text is an array-like objects and performs:
 
     alpha_iterator(text) ==>  Returns lower-case letters stripped of 
-    punctuation and numbers.
+    punctuation and numbers. 
+    Note: By default alpha_iterator removes numbers and emoticons.To keep numbers:
+        alpha_iterator(text, remove_numeric = False)
+        Likewise, to keep emoticons: 
+        alpha_iterator(text, remove_emoticon = False)
+        To Keep both:
+        alpha_iterator(text, remove_emoticon = False, remove_numeric = False)
     stop_word_iterator(text) ==>  Removes common "stop" words, like "and".
-        Note: By default stop_word_iterator removes numbers. To keep numbers:
-        stop_word_oterator(text, remove_numeric = False)
+        
     custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
     list format. stop_words are words to be removed.
     can use this in-lieu of stop_word_iterator, or in addition to.
@@ -58,32 +63,63 @@ class TextCleaner:
             self.stop_words = pickle.load(pkl_file) 
             pkl_file.close() 
 
-    def __alphaizer(self, text, remove_numeric):
+    def __alphaizer(self, text, remove_numeric, remove_emoticon):
         self.text = text
         self.remove_numeric = remove_numeric
-        """
-        Given a string (text), removes all punctuation and numbers.
+        self.remove_emoticon = remove_emoticon
+        """Given a string (text), removes all punctuation and numbers.
         Returns lower-case words. Called by the iterator method
         alpha_iterator to apply this to lists, or array-like (pandas dataframe)
-        objects. """
-        if remove_numeric:
+        objects."""
+        
+        if remove_numeric and remove_emoticon:
             result = ''.join(i for i in text if not i.isdigit())
+            result = re.sub('<[^>]*>','', result)
             translation = str.maketrans("","", string.punctuation)
             x = result.translate(translation)
-            x = re.sub("^\s" , "" , x) #Removes leading spaces
             x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
             x = re.sub("  "," ", x) #Removes extra spaces
             x = x.replace('\\','').lower()
             return x
-        else:
+        
+        elif not remove_numeric and remove_emoticon:
             translation = str.maketrans("","", string.punctuation)
-            x = text.translate(translation)
+            result = re.sub('<[^>]*>','', text)
+            x = result.translate(translation)
             x = re.sub("^\s" , "" , x) #Removes leading spaces
             x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
             x = re.sub("  "," ", x) #Removes extra spaces
             x = x.replace('\\','').lower() #Removes back-space
             return x
-	       
+        
+        elif not remove_numeric and not remove_emoticon:
+            translation = str.maketrans("","", string.punctuation)
+            result = re.sub('<[^>]*>','', text)
+            x = result.translate(translation)
+            x = re.sub("^\s" , "" , x) #Removes leading spaces
+            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
+            x = re.sub("  "," ", x) #Removes extra spaces
+            x = x.replace('\\','').lower() #Removes back-space
+            emoticons = TextCleaner.__emoticon_finder(text)
+            emoticons.replace('-','')
+            returned =  x + ' ' + emoticons
+            return returned.rstrip()
+        
+        elif remove_numeric and not remove_emoticon:
+            result = ''.join(i for i in text if not i.isdigit())
+            translation = str.maketrans("","", string.punctuation)
+            result = re.sub('<[^>]*>','', result)
+            x = result.translate(translation)
+            x = re.sub("^\s" , "" , x) #Removes leading spaces
+            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
+            x = re.sub("  "," ", x) #Removes extra spaces
+            x = x.replace('\\','').lower()
+            emoticons = TextCleaner.__emoticon_finder(text=text)
+            emoticons.replace('-','')
+            returned =  x + ' ' + emoticons
+            return returned.rstrip()
+         
+			
     def __stop_word_remover(self, text, stop):
         """Removes common stop-words like: "and", "or","but", etc. Called by
         stop_word_iterator to apply this to lists, or array-like (pandas dataframe)
@@ -119,6 +155,14 @@ class TextCleaner:
         
         return text
     
+    def __emoticon_finder(text):
+        ''' Finds emoticons.'''
+        emoticons_ = ""
+        emoticons = re.findall('(?::|;|=)(?:-)?(?:\)|\(|D|P)', text)
+        for e in emoticons:
+            emoticons_ += e
+        return emoticons_
+		
     def stop_word_iterator(self, text):
         """Calls __stop_word_remover to apply this method to array-like objects.
         Usage: TextCleaner.stop_word_iterator(text)."""
@@ -129,7 +173,7 @@ class TextCleaner:
         
         return text2
     
-    def alpha_iterator(self, text, remove_numeric = True):
+    def alpha_iterator(self, text, remove_numeric = True, remove_emoticon = True):
         """
         Calls __alphaizer to apply this method to array-like objects. Usage:
         TextCleaner.alphaizer(text).
@@ -139,7 +183,8 @@ class TextCleaner:
         """
         self.text = text
         self.remove_numeric = remove_numeric
-        text2 = [self.__alphaizer(x, remove_numeric) for x in text]
+        self.remove_emoticon = remove_emoticon
+        text2 = [self.__alphaizer(x, remove_numeric, remove_emoticon) for x in text]
         
         return text2
     
