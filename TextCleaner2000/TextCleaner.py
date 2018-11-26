@@ -3,25 +3,26 @@ import re
 import pickle
 import os
 import string
+
 class TextCleaner:
     """
-    Takes text where text is an array-like objects and performs:
+    Takes Text where Text is an array-like objects and performs:
 
-    alpha_iterator(text) ==>  Returns lower-case letters stripped of 
+    alpha_iterator(Text) ==>  Returns lower-case letters stripped of 
     punctuation and numbers. 
     Note: By default alpha_iterator removes numbers and emoticons.To keep numbers:
-        alpha_iterator(text, remove_numeric = False)
+        alpha_iterator(Text, remove_numeric = False)
         Likewise, to keep emoticons: 
-        alpha_iterator(text, remove_emoticon = False)
+        alpha_iterator(Text, remove_emoticon = False)
         To Keep both:
-        alpha_iterator(text, remove_emoticon = False, remove_numeric = False)
-    stop_word_iterator(text) ==>  Removes common "stop" words, like "and".
+        alpha_iterator(Text, remove_emoticon = False, remove_numeric = False)
+    stop_word_iterator(Text) ==>  Removes common "stop" words, like "and".
         
-    custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
+    custom_stop_word_iterator(Text, stop_words) ==> Custom stop_words in 
     list format. stop_words are words to be removed.
     can use this in-lieu of stop_word_iterator, or in addition to.
     STATIC METHOD:
-        TextCleaner.tokenizer(text) ==> Returns tokens (unigrams) from a 
+        TextCleaner.tokenizer(Text) ==> Returns tokens (unigrams) from a 
         list of sentences. 
 	
     GENERAL USAGE:
@@ -32,24 +33,24 @@ class TextCleaner:
     Instance Instantiation:
         3a) For simple projects as described in 1), simply  instantiate a 
         cleaner object with empty call: cleaner = TextCleaner()
-        3b) For more complicated projects pass the install directory to tell 
+        3b) For more complicated projects (or to place textCleaner in custom directory) pass the install directory to tell 
         TextCleaner where to locate files and initialize  a cleaner instance:
         WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
-        LINUX/UNIX/IOS: cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
+        LINUcleaned/UNIcleaned/IOS: cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
         Call instance methods:
         4) cleaner has instance methods so to use the functions call: 
         cleaner.function_name
     METHOD USAGE:
-        For the following examples, text refers to an array-like object. 
-        For best results, pass text as a list() or a Pandas 
+        For the following ecleanedamples, Text refers to an array-like object. 
+        For best non_numerics, pass Text as a list() or a Pandas 
 		 DataFrame column: (assuming data_frame is a pandas DataFrame) data_frame["column_name"].
         For custom stopword removal, pass as a list().	
     GENERAL NUMBER AND PUNCTUATION REMOVAL:
-        alpha_words = cleaner.alpha_iterator(text)
+        alpha_words = cleaner.alpha_iterator(Text)
     COMMON STOPWORD REMOVAL:
-        cleaned_of_stops = cleaner.stop_word_iterator(text)
+        cleaned_of_stops = cleaner.stop_word_iterator(Text)
     CUSTOM STOPWORD REMOVAL:
-        cleaned_of_custom_stops = cleaner.custom_stop_word_iterator(text, stop_words)
+        cleaned_of_custom_stops = cleaner.custom_stop_word_iterator(Text, stop_words)
         Remember that stop_words is a comma-separated list()."""  
     
     def __init__(self, tc_2000_home = ""):
@@ -69,68 +70,68 @@ class TextCleaner:
         self.text = text
         self.remove_numeric = remove_numeric
         self.remove_emoticon = remove_emoticon
-        """Given a string (text), removes all punctuation and numbers.
+        """Given a string (Text), removes all punctuation and numbers.
         Returns lower-case words. Called by the iterator method
         alpha_iterator to apply this to lists, or array-like (pandas dataframe)
         objects."""
         
         if remove_numeric and remove_emoticon:
-            result = ''.join(i for i in text if not i.isdigit())
-            result = re.sub('<[^>]*>','', result)
+            non_numeric = ''.join(i for i in text if not i.isdigit())
+            non_numeric = re.sub('<[^>]*>','', non_numeric)
             translation = str.maketrans("","", string.punctuation)
-            x = result.translate(translation)
-            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
-            x = re.sub("  "," ", x) #Removes extra spaces
-            x = x.replace('\\','').lower()
-            return x
+            cleaned = non_numeric.translate(translation)
+            cleaned = re.sub("\s+$" ,"" , cleaned) # Removes trailing spaces
+            cleaned = re.sub("  "," ", cleaned) #Removes extra spaces
+            cleaned = cleaned.replace('\\','').lower()
+            return cleaned
         
         elif not remove_numeric and remove_emoticon:
             translation = str.maketrans("","", string.punctuation)
-            result = re.sub('<[^>]*>','', text)
-            x = result.translate(translation)
-            x = re.sub("^\s" , "" , x) #Removes leading spaces
-            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
-            x = re.sub("  "," ", x) #Removes extra spaces
-            x = x.replace('\\','').lower() #Removes back-space
-            return x
+            non_numeric = re.sub('<[^>]*>','', text)
+            cleaned = non_numeric.translate(translation)
+            cleaned = re.sub("^\s" , "" , cleaned) #Removes leading spaces
+            cleaned = re.sub("\s+$" ,"" , cleaned) # Removes trailing spaces
+            cleaned = re.sub("  "," ", cleaned) #Removes extra spaces
+            cleaned = cleaned.replace('\\','').lower() #Removes back-space
+            return cleaned
         
         elif not remove_numeric and not remove_emoticon:
             translation = str.maketrans("","", string.punctuation)
-            result = re.sub('<[^>]*>','', text)
-            x = result.translate(translation)
-            x = re.sub("^\s" , "" , x) #Removes leading spaces
-            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
-            x = re.sub("  "," ", x) #Removes extra spaces
-            x = x.replace('\\','').lower() #Removes back-space
+            non_numeric = re.sub('<[^>]*>','', text)
+            cleaned = non_numeric.translate(translation)
+            cleaned = re.sub("^\s" , "" , cleaned) #Removes leading spaces
+            cleaned = re.sub("\s+$" ,"" , cleaned) # Removes trailing spaces
+            cleaned = re.sub("  "," ", cleaned) #Removes extra spaces
+            cleaned = cleaned.replace('\\','').lower() #Removes back-space
             emoticons = TextCleaner.__emoticon_finder(text)
             emoticons.replace('-','')
-            returned =  x + ' ' + emoticons
-            return returned.rstrip()
+            clean =  cleaned + ' ' + emoticons
+            return clean.rstrip()
         
         elif remove_numeric and not remove_emoticon:
-            result = ''.join(i for i in text if not i.isdigit())
+            non_numeric = ''.join(i for i in text if not i.isdigit())
             translation = str.maketrans("","", string.punctuation)
-            result = re.sub('<[^>]*>','', result)
-            x = result.translate(translation)
-            x = re.sub("^\s" , "" , x) #Removes leading spaces
-            x = re.sub("\s+$" ,"" , x) # Removes trailing spaces
-            x = re.sub("  "," ", x) #Removes extra spaces
-            x = x.replace('\\','').lower()
+            non_numeric = re.sub('<[^>]*>','', non_numeric)
+            cleaned = non_numeric.translate(translation)
+            cleaned = re.sub("^\s" , "" , cleaned) #Removes leading spaces
+            cleaned = re.sub("\s+$" ,"" , cleaned) # Removes trailing spaces
+            cleaned = re.sub("  "," ", cleaned) #Removes extra spaces
+            cleaned = cleaned.replace('\\','').lower()
             emoticons = TextCleaner.__emoticon_finder(text=text)
             emoticons.replace('-','')
-            returned =  x + ' ' + emoticons
-            return returned.rstrip()
+            clean =  cleaned + ' ' + emoticons
+            return clean.rstrip()
            
     def __tokenizer(text):
         """Returns words in a list, composed of a sentence split by single-spaces."""
-        returned = text.split(' ')
-        clean = [ x for x in returned if x != '']
+        tokenized = text.split(' ')
+        clean = [ token for token in tokenized if token != '']
         return clean
     
     @staticmethod     
     def tokenizer(text): 
-        returned  = [TextCleaner.__tokenizer(x) for x in text if x != None]
-        return returned
+        clean  = [TextCleaner.__tokenizer(t) for t in text if t != None]
+        return clean
     
     def __stop_word_remover(self, text, stop):
         """Removes common stop-words like: "and", "or","but", etc. Called by
@@ -140,9 +141,9 @@ class TextCleaner:
         self.text = text
         
         clean = ''
-        words = [w for w in TextCleaner.__tokenizer(text) if w not in stop]
-        for w in words:
-            clean += " " + w
+        tokens = [t for t in TextCleaner.__tokenizer(text) if t not in stop]
+        for t in tokens:
+            clean += " " + t
         return clean.lstrip()
         
     def __emoticon_finder(text):
@@ -155,44 +156,44 @@ class TextCleaner:
 		
     def stop_word_iterator(self, text):
         """Calls __stop_word_remover to apply this method to array-like objects.
-        Usage: TextCleaner.stop_word_iterator(text)."""
+        Usage: TextCleaner.stop_word_iterator(Text)."""
 
         self.text = text
         
-        text2 = [self.__stop_word_remover(x,self.stop_words) for x in text]
+        clean = [self.__stop_word_remover(t, self.stop_words) for t in text]
         
-        return text2
+        return clean
     
     def alpha_iterator(self, text, remove_numeric = True, remove_emoticon = True):
         """
         Calls __alphaizer to apply this method to array-like objects. Usage:
-        TextCleaner.alphaizer(text).
+        TextCleaner.alphaizer(Text).
         Note: By default this method removes numbers from each string.
         To change this behavior pass the flag remove_numerals:
-        alphaizer(text, remove_numerals = False)
+        alphaizer(Text, remove_numerals = False)
         """
         self.text = text
         self.remove_numeric = remove_numeric
         self.remove_emoticon = remove_emoticon
-        text2 = [self.__alphaizer(x, remove_numeric, remove_emoticon) for x in text]
+        clean = [self.__alphaizer(t, remove_numeric, remove_emoticon) for t in text]
         
-        return text2
+        return clean
     
     def custom_stop_word_iterator(self, text, stop_words):
-        """Removes custom stop-words. For example, "patient", or "medicine", if
-        one is dealing with medical text and do not want to include those words 
+        """Removes custom stop-words. For ecleanedample, "patient", or "medicine", if
+        one is dealing with medical Text and do not want to include those words 
         in analysis. Can use this method to pass any set of stop
         words, or in-lieu of common stop-word method stop_word_iterator.Calls 
         __stop_word_remover to apply this method to array-like objects. Usage:
-        TextCleaner.custom_stop_word_iterator(text, stop_words), where 
-        stop-words and text are in a comma-
+        TextCleaner.custom_stop_word_iterator(Text, stop_words), where 
+        stop-words and Text are in a comma-
         separated list, or iterable."""
 
         self.text = text
         
-        text2 = [self.__stop_word_remover(x,stop_words) for x in text]
+        clean = [self.__stop_word_remover(t, stop_words) for t in text]
         
-        return text2
+        return clean
     
 
         
