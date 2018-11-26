@@ -24,7 +24,7 @@ text_without_numbers_or_symbols = cleaner.alpha_iterator(text)
 ## By default, alpha_iterator removes numbers as well. To change this and keep numbers:
 text_with_numbers = cleaner.alpha_iterator(text, remove_numeric = False)
 
-## By default, alpha_iterator removes all puntuation obviously including emoticons. To change this and keep emoticons:
+## By default, alpha_iterator removes all puntuation obviously including emoticons (for sentiment analysis). To change this and keep emoticons:
 text_with_emoticons = cleaner.alpha_iterator(text, remove_emoticon = False)
 
 ## You can remove emoticons and numbers, keep both, or keep one and not the other by passing both flags:
