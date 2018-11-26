@@ -26,18 +26,11 @@ class TextCleaner:
         list of sentences. 
 	
     GENERAL USAGE:
-        1) You don't have a need to locate your project outside rot folder, download 
-        file to root directory of project, where .py or .ipynb will live.
+        1) After unzipping/cloning, move TextCleaner/TextCleaner to your project's root folder where .py or .ipynb will live.
     Import:
         2) from  TextCleaner2000.TextCleaner import TextCleaner
     Instance Instantiation:
-        3a) For simple projects as described in 1), simply  instantiate a 
-        cleaner object with empty call: cleaner = TextCleaner()
-        3b) For more complicated projects where you want to specify some other location than root folder,
-		pass the install directory to tell TextCleaner where to locate files and initialize  a cleaner instance:
-        WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
-        LINUX/UNIX/IOS: 
-		cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
+        3) Simply  instantiate a cleaner object with empty call: cleaner = TextCleaner()
    
     METHOD USAGE:
         For the following examples, text refers to an array-like object. 
