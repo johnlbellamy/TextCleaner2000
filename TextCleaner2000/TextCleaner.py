@@ -7,38 +7,32 @@ import pandas as pd
 
 class TextCleaner:
     """
-    Takes Text where Text is an array-like objects and performs:
-
-    alpha_iterator(Text) ==>  Returns lower-case letters stripped of 
+    Takes text where text is an array-like objects and performs:
+    alpha_iterator(text) ==>  Returns lower-case letters stripped of 
     punctuation and numbers. 
     Note: By default alpha_iterator removes numbers and emoticons.To keep numbers:
-        alpha_iterator(Text, remove_numeric = False)
+        alpha_iterator(text, remove_numeric = False)
         Likewise, to keep emoticons: 
-        alpha_iterator(Text, remove_emoticon = False)
+        alpha_iterator(text, remove_emoticon = False)
         To Keep both:
-        alpha_iterator(Text, remove_emoticon = False, remove_numeric = False)
-    stop_word_iterator(Text) ==>  Removes common "stop" words, like "and".
+        alpha_iterator(text, remove_emoticon = False, remove_numeric = False)
+    stop_word_iterator(text) ==>  Removes common "stop" words, like "and".
         
-    custom_stop_word_iterator(Text, stop_words) ==> Custom stop_words in 
+    custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
     list format. stop_words are words to be removed.
     can use this in-lieu of stop_word_iterator, or in addition to.
     STATIC METHOD:
-        TextCleaner.tokenizer(Text) ==> Returns tokens (unigrams) from a 
+        TextCleaner.tokenizer(text) ==> Returns tokens (unigrams) from a 
         list of sentences. 
 	
     GENERAL USAGE:
-        1) You don't have a need to locate your project outside rot folder, download 
-        file to root directory of project, where .py or .ipynb will live.
+        1) Move TextCleaner/TextCleaner folder to root directory of your project, 
+        where .py or .ipynb will live.
     Import:
         2) from  TextCleaner2000.TextCleaner import TextCleaner
-    Instance Instantiation:
-        3a) For simple projects as described in 1), simply  instantiate a 
-        cleaner object with empty call: cleaner = TextCleaner()
-        3b) For more complicated projects where you want to specify some other location than root folder,
-		pass the install directory to tell TextCleaner where to locate files and initialize  a cleaner instance:
-        WINDOWS: cleaner = TextCleaner("PATH\\TO\\INSTALL\\DIRECTORY\\TextCleaner2000")
-        LINUX/UNIX/IOS: 
-		cleaner = TextCleaner("PATH/TO/INSTALL/DIRECTORY/TextCleaner2000")
+        Instance Instantiation:
+        3) Simply  instantiate a cleaner object with empty call: 
+        cleaner = TextCleaner()
    
     METHOD USAGE:
         For the following examples, text refers to an array-like object. 
@@ -46,7 +40,7 @@ class TextCleaner:
 		 DataFrame column: (assuming data_frame is a pandas DataFrame) data_frame["column_name"].
         For stop words used in custom stop word removal, pass stop words as a list().	
     GENERAL NUMBER AND PUNCTUATION REMOVAL:
-        alpha_words = cleaner.alpha_iterator(text)
+        alpha_words = cleaner.alpha_iterator(text, remove_emoticon = True, remove_numeric = True)
     COMMON STOPWORD REMOVAL:
         cleaned_of_stops = cleaner.stop_word_iterator(text)
     CUSTOM STOPWORD REMOVAL:
@@ -67,7 +61,7 @@ class TextCleaner:
             pkl_file.close() 
 
     def __alphaizer(self, text, remove_numeric, remove_emoticon):
-        """Given a string (Text), removes all punctuation and numbers.
+        """Given a string (text), removes all punctuation and numbers.
         Returns lower-case words. Called by the iterator method
         alpha_iterator to apply this to lists, or array-like (pandas dataframe)
         objects."""
@@ -163,7 +157,6 @@ class TextCleaner:
         self.text = text
         
         clean = [self.__stop_word_remover(t, self.stop_words) for t in text]
-        
         return clean
     
     def alpha_iterator(self, text, remove_numeric = True, remove_emoticon = True):
@@ -177,8 +170,8 @@ class TextCleaner:
         self.text = text
         self.remove_numeric = remove_numeric
         self.remove_emoticon = remove_emoticon
-        clean = [self.__alphaizer(t, remove_numeric, remove_emoticon) for t in text]
         
+        clean = [self.__alphaizer(t, remove_numeric, remove_emoticon) for t in text]
         return clean
     
     def custom_stop_word_iterator(self, text, stop_words):
@@ -194,7 +187,6 @@ class TextCleaner:
         self.text = text
         
         clean = [self.__stop_word_remover(t, stop_words) for t in text]
-        
         return clean
     
 
