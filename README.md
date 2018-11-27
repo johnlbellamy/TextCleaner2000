@@ -7,7 +7,7 @@ A light-weight stop-word/custom stop-word removal tool and text cleaner.
 
 # Add to imports:
 
-from  TextCleaner2000.TextCleaner import TextCleaner
+from  text_cleaner_2000.text_cleaner import TextCleaner
 
 # For Help and detailed usage:
 help(cleaner)

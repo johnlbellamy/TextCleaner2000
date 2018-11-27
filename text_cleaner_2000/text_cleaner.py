@@ -118,7 +118,7 @@ class TextCleaner:
           
     @staticmethod     
     def tokenizer(text): 
-        """Given a sentence, splits sentence on blanks aand returns a list of ngrams or tokens"""
+        """Given a sentence, splits sentence on blanks and returns a list of ngrams or tokens"""
         if type(text) is str:
             tokenized = text.split(' ')
             clean = [ token for token in tokenized if token != '']
