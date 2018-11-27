@@ -21,7 +21,14 @@ class TextCleaner:
     custom_stop_word_iterator(text, stop_words) ==> Custom stop_words in 
     list format. stop_words are words to be removed.
     can use this in-lieu of stop_word_iterator, or in addition to.
-    STATIC METHOD:
+    streaming_cleaner_and_tokenizer ==> A text cleaner, tokenizer, and stop-word remover 
+    that is designed to be used with bag-of-word, out-of-processor, or other algorithms 
+    that have an argument for a tokenizer.
+    Method is applied for each row in a list. Pass this as an argument wherever you need a tokenizer/processor
+    for algorithms like bag-of-words. Note that this method keeps emoticons, since they can 
+    help in determinng polarity of text.
+    
+     STATIC METHOD:
         TextCleaner.tokenizer(text) ==> Returns tokens (unigrams) from a 
         list of sentences. 
 	
@@ -45,7 +52,16 @@ class TextCleaner:
         cleaned_of_stops = cleaner.stop_word_iterator(text)
     CUSTOM STOPWORD REMOVAL:
         cleaned_of_custom_stops = cleaner.custom_stop_word_iterator(text, stop_words)
-        Remember that stop_words is a comma-separated list()."""  
+        Remember that stop_words is a comma-separated list().
+    STREAMING TEXT:
+        Pass TextCleaner.streaming_cleaner_and_tokenizer as an argument to an algorithm
+        that calls for a tokenizer. For example, with HashingVectorizer which can
+        be used with SGDClassifier:
+            HashingVectorizer(decode_error = 'ignore',
+                        n_features = 2**21,
+                        preprocessor = None,
+                        tokenizer = cleaner.streaming_cleaner_and_tokenizer)
+            """  
     
     def __init__(self, tc_2000_home = ""):
         self.tc_2000_home = tc_2000_home
@@ -173,7 +189,7 @@ class TextCleaner:
         return clean
     
     def custom_stop_word_iterator(self, text, stop_words):
-        """Removes custom stop-words. For ecleanedample, "patient", or "medicine", if
+        """Removes custom stop-words. For cleaned example, "patient", or "medicine", if
         one is dealing with medical Text and do not want to include those words 
         in analysis. Can use this method to pass any set of stop
         words, or in-lieu of common stop-word method stop_word_iterator.Calls 
@@ -186,5 +202,17 @@ class TextCleaner:
         clean = [self.__stop_word_remover(t, stop_words) for t in text]
         return clean
     
+    def streaming_cleaner_and_tokenizer(self, text, remove_numeric = True, remove_emoticon = False):
+        """Called per line of text in a a stream application, such as SGD.
+        Can be passed directly to SGD algorithms as TextCleaner.streaming_cleaner_and_tokenizer"""
+        self.text = text
+        self.remove_emoticon = remove_emoticon
+        self.remove_numeric = remove_numeric
+        
+        alpha = self.__alphaizer(text = text, remove_numeric = remove_numeric, 
+                                        remove_emoticon = remove_emoticon)
+        clean = self.__stop_word_remover(alpha, self.stop_words)
+        tokens = TextCleaner.tokenizer(clean)
+        return tokens
 
         
