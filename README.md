@@ -9,15 +9,15 @@ A light-weight stop-word/custom stop-word removal tool and text cleaner.
 
 from  text_cleaner_2000.text_cleaner import TextCleaner
 
-# For Help and detailed usage:
-help(cleaner)
-
 # Usage
 Instantiate Cleaner Object:
 cleaner = TextCleaner()
 
+# For Help and detailed usage:
+help(cleaner)
+
 # To remove numbers and punctuation/symbols:
-## text is pd.DataFrame['Column'] or list (array-like) object.
+text is pd.DataFrame['Column'] or list (array-like) object.
 
 text_without_numbers_or_symbols = cleaner.alpha_iterator(text)
 
