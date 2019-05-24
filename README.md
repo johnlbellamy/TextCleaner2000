@@ -1,7 +1,14 @@
 # TextCleaner2000
 A light-weight stop-word/custom stop-word removal tool and text cleaner.
 
-# Install
+# System-wide install
+1) Download or clone File
+2) Unzip file.
+3) Change to TextCleaner2000/dist
+4) Install from wheel:
+   pip install dist/text_cleaner-0.0.1-py3-none-any.whl
+   
+# Project Install
 1) Download or clone File
 2) Unzip file. You put TextCleaner/TextCleaner in your project's working directory. 
 
