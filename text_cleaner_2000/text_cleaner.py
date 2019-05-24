@@ -68,9 +68,20 @@ class TextCleaner:
         pickle_file_path = 'stops.pkl'
         
         if tc_2000_home == "":
-            pkl_file = open(os.path.join(os.getcwd() + '\\text_cleaner_2000',pickle_file_path), 'rb')
-            self.stop_words = pickle.load(pkl_file) 
-            pkl_file.close() 
+            
+            try:
+                
+                pkl_file = open(os.path.join(os.getcwd() + '\\text_cleaner_2000',pickle_file_path), 'rb')
+                self.stop_words = pickle.load(pkl_file)
+                pkl_file.close()
+                
+            except FileNotFoundError:
+                
+                pkl_file = open(os.path.join(os.getcwd() + '/text_cleaner_2000',pickle_file_path), 'rb')
+                self.stop_words = pickle.load(pkl_file) 
+                pkl_file.close() 
+
+ 
         else:
             pkl_file = open(os.path.join(tc_2000_home,pickle_file_path), 'rb')
             self.stop_words = pickle.load(pkl_file) 
