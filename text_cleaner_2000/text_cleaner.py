@@ -64,29 +64,15 @@ class TextCleaner:
             """  
     
     def __init__(self, tc_2000_home = ""):
-        self.tc_2000_home = tc_2000_home
-        pickle_file_path = 'stops.pkl'
         
-        if tc_2000_home == "":
-            
-            try:
-                
-                pkl_file = open(os.path.join(os.getcwd() + '\\text_cleaner_2000',pickle_file_path), 'rb')
-                self.stop_words = pickle.load(pkl_file)
-                pkl_file.close()
-                
-            except FileNotFoundError:
-                
-                pkl_file = open(os.path.join(os.getcwd() + '/text_cleaner_2000',pickle_file_path), 'rb')
-                self.stop_words = pickle.load(pkl_file) 
-                pkl_file.close() 
-
- 
-        else:
-            pkl_file = open(os.path.join(tc_2000_home,pickle_file_path), 'rb')
-            self.stop_words = pickle.load(pkl_file) 
-            pkl_file.close() 
-
+	tc_2000_home = os.path.dirname(os.path.abspath(__file__))
+	pickle_file_path = 'stops.pkl'
+	
+	pkl_file = open(os.path.join(tc_2000_home, pickle_file_path), 'rb')
+	self.stop_words = pickle.load(pkl_file)
+	
+	pkl_file.close()
+	
     def __alphaizer(self, text, remove_numeric, remove_emoticon):
         """Given a string (text), removes all punctuation and numbers.
         Returns lower-case words. Called by the iterator method
