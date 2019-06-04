@@ -4,7 +4,7 @@ A light-weight stop-word/custom stop-word removal tool, text cleaner and streami
 # System-wide install
 1) Download or clone File
 2) Unzip file.
-3) Change to TextCleaner2000/dist
+3) Change to TextCleaner2000
 4) Install from setup.py:
 python setup.py install
   
