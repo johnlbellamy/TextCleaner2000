@@ -7,12 +7,17 @@ Author: John Bellamy
 Author-email: johnb3406@gmail.com
 License: UNKNOWN
 Description: # TextCleaner2000
-        A light-weight stop-word/custom stop-word removal tool and text cleaner.
+        A light-weight stop-word/custom stop-word removal tool, text cleaner and streaming tokenizer/cleaner.
         
-        # Install
+        # System-wide install
         1) Download or clone File
-        2) Unzip file. You put TextCleaner/TextCleaner in your project's working directory. 
+        2) Unzip file.
+        3) Change to TextCleaner2000
+        4) Install from setup.py:
+        python setup.py install
         
+        WORKING ON PIP INSTALLER
+          
         # Add to imports:
         
         from  text_cleaner_2000.text_cleaner import TextCleaner

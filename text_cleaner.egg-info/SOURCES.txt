@@ -1,8 +1,17 @@
+.gitignore
+LICENSE
 README.md
 setup.py
+dist/text_cleaner-0.0.1-py3-none-any.whl
+dist/text_cleaner-0.0.1.tar.gz
 text_cleaner.egg-info/PKG-INFO
 text_cleaner.egg-info/SOURCES.txt
 text_cleaner.egg-info/dependency_links.txt
 text_cleaner.egg-info/top_level.txt
 text_cleaner_2000/__init__.py
+text_cleaner_2000/stops.pkl
 text_cleaner_2000/text_cleaner.py
+text_cleaner_2000/__pycache__/__init__.cpython-36.pyc
+text_cleaner_2000/__pycache__/__init__.cpython-37.pyc
+text_cleaner_2000/__pycache__/text_cleaner.cpython-36.pyc
+text_cleaner_2000/__pycache__/text_cleaner.cpython-37.pyc
