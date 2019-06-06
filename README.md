@@ -40,7 +40,9 @@ text_with_emoticons = cleaner.alpha_iterator(text, remove_emoticon = False)
 ```
 ## You can remove emoticons and numbers, keep both, or keep one and not the other by passing both flags:
 ```
-text_with_emoticons_and_numbers = cleaner.alpha_iterator(text, remove_numeric = False, remove_emoticon = False)
+text_with_emoticons_and_numbers = cleaner.alpha_iterator(text, 
+                                                         remove_numeric=False, 
+                                                         remove_emoticon=False)
 ```
 # To remove common stop words like "and","or", "the", etc.:
 ```
