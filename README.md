@@ -50,7 +50,7 @@ text_with_common_stops_removed = cleaner.stop_word_iterator(text)
 ```
 # Perhaps the best feature is the ability to pass a list to remove custom stop words.
 ```python
-custom_stop_words =["custom_stopword1","custom_stopword2","custom_stopwordn"]
+custom_stop_words = ["custom_stopword1", "custom_stopword2", "custom_stopwordn"]
 
-text_with_custom_stops_removed  = cleaner.custom_stop_word_iterator(text, custom_stop_words)
+text_with_custom_stops_removed = cleaner.custom_stop_word_iterator(text, custom_stop_words)
 ```
