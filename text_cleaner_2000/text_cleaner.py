@@ -67,17 +67,17 @@ class TextCleaner:
                         preprocessor = None,
                         tokenizer = cleaner.streaming_cleaner_and_tokenizer)"""
 
+    __TC_2000_HOME = os.path.dirname(os.path.abspath(__file__))
+    __PICKLE_FILE_PATH = 'stops.pkl'
+
+    __PKL_FILE = open(os.path.join(__TC_2000_HOME, __PICKLE_FILE_PATH), 'rb')
+    STOPWORDS = pickle.load(__PKL_FILE)                    
+    __PKL_FILE.close()
+
     def __init__(self):
 
         self.emoticons = None
-
-        tc_2000_home = os.path.dirname(os.path.abspath(__file__))
-        pickle_file_path = 'stops.pkl'
-
-        pkl_file = open(os.path.join(tc_2000_home, pickle_file_path), 'rb')
-        self.stop_words = pickle.load(pkl_file)
-
-        pkl_file.close()
+        
 
     @classmethod 
     def __alphaizer(self, text, remove_numeric, remove_emoticon):
@@ -148,12 +148,12 @@ class TextCleaner:
             emoticons_ += ' ' + e
         return emoticons_.lstrip()
 
-    #@classmethod 
+    @classmethod
     def stop_word_iterator(self, text):
         """Calls __stop_word_remover to apply this method to array-like objects.
         Usage: TextCleaner.stop_word_iterator(Text)."""
 
-        clean = (self.__stop_word_remover(t, self.stop_words) for t in text)
+        clean = (self.__stop_word_remover(t, TextCleaner.STOPWORDS) for t in text)
         return list(clean)
 
     @classmethod 
@@ -190,7 +190,7 @@ class TextCleaner:
         alpha = self.__alphaizer(text=text, remove_numeric=remove_numeric,
                                  remove_emoticon=remove_emoticon)
 
-        clean = self.__stop_word_remover(alpha, self.stop_words)
+        clean = self.__stop_word_remover(alpha, TextCleaner.STOPWORDS)
         tokens = TextCleaner.tokenizer(clean)
         return tokens
     
